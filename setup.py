@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(name='dart',
       version='0.1.0',
-      install_requires=["gym==0.9.5",
+      install_requires=["gym==0.8.0",
                         "numpy",
                         "scipy",
                         "matplotlib",

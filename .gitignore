@@ -12,3 +12,4 @@ results/
 gym/
 *.swp
 .DS_Store
+dart.egg-info/
