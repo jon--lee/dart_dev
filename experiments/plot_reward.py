@@ -40,9 +40,6 @@ def main():
 
     plt.style.use('ggplot')
 
-    ptype = 'surr_loss'
-    
-
     # Best supervisor reward
     title = 'test_bc'
     ptype = 'sup_reward'
@@ -92,27 +89,12 @@ def main():
     ptype = 'reward'
     params_dagger = params.copy()
     params_dagger['beta'] = .5
+    params_dagger['update_period'] = 5
     c = next(color)
     try:
         means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
         means, sems = normalize(means, sems)
         plt.plot(snapshot_ranges, means, label='DAgger', color=c)
-        plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=c)
-    except IOError:
-        pass
-
-
-    # DAgger B
-    beta = .5
-    title = 'test_dagger_b'
-    ptype = 'reward'
-    params_dagger_b = params.copy()
-    params_dagger_b['beta'] = beta      # You may adjust the prior to whatever you chose.
-    c = next(color)
-    try:
-        means, sems = utils.extract_data(params_dagger_b, title, sub_dir, ptype)
-        means, sems = normalize(means, sems)
-        plt.plot(snapshot_ranges, means, color=c, label='DAgger-B')
         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=c)
     except IOError:
         pass
@@ -134,11 +116,12 @@ def main():
 
 
     # DART
-    partition = 450
+    partition = .1
     title = 'test_dart'
     ptype = 'reward'
     params_dart = params.copy()
     params_dart['partition'] = partition
+    params_dart['update_period'] = 5
     c = next(color)
     try: 
         means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
