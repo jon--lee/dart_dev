@@ -32,10 +32,10 @@ def sample_covariance_sup(env, lnr, sup, samples, T):
     return cov / float(samples)
 
 
-def sample_covariance_trajs(env, lnr, trajs, samples, T):
+def sample_covariance_trajs(env, lnr, trajs, T):
     d = env.action_space.shape[0]
     cov = np.zeros((d, d))
-    trajs = np.array(trajs[len(trajs) - samples:])
+    # trajs = np.array(trajs[len(trajs) - samples:])
     # trajs = np.array(trajs[:])
     # trajs = np.array(trajs[len(trajs) - samples * 2:])
     # indices = np.random.choice(len(trajs), min(len(trajs), samples), replace=False)

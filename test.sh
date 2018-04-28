@@ -1,7 +1,10 @@
-python experiments/test_bc.py --envname Hopper-v1 --t 100 --max_data 20 --num_evals 4
+python experiments/test_bc.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4
+python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --update_period 5 --beta .5
+python experiments/test_dart.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --update_period 5 --partition .1
+python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --scale 1.0
+python experiments/test_rand.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --trace 0.5
 
 # python experiments/test_bc.py --envname Hopper-v1 --t 500 --iters 5 10 15 20
-# python experiments/test_dart.py --envname Hopper-v1 --t 500 --iters 5 10 15 20 --update 1 7 --partition 450
 # python experiments/test_dart.py --envname Hopper-v1 --t 500 --iters 5 10 15 20 --update 1 7 --partition 50
 # python experiments/test_dart.py --envname Hopper-v1 --t 500 --iters 5 10 15 20 --update 1 7 --partition 10
 # python experiments/test_dart.py --envname Hopper-v1 --t 500 --iters 5 10 15 20 --update 1 7 --partition 5

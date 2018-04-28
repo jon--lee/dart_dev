@@ -15,7 +15,7 @@ import sys
 import IPython
 sys.path.append("..")
 
-TRIALS = 1
+TRIALS = 2
 
 class Test(object):
 
@@ -23,6 +23,7 @@ class Test(object):
         self.params = params
         self.params['trials'] = TRIALS
         # asserts.enforce(params)
+        del self.params['trials']
         return
 
     def reset_learner(self, params):

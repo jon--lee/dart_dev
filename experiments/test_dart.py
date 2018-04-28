@@ -19,9 +19,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--envname', required=True)                         # OpenAI gym environment
     ap.add_argument('--t', required=True, type=int)                     # time horizon
-    ap.add_argument('--iters', required=True, type=int, nargs='+')      # iterations to evaluate the learner on
-    ap.add_argument('--update', required=True, nargs='+', type=int)     # iterations to update the noise term
-    ap.add_argument('--partition', required=True, type=int)             # Integer between 1 and 450 (exclusive),
+    ap.add_argument('--num_evals', required=True, type=int)             # number of evaluations
+    ap.add_argument('--max_data', required=True, type=int)              # maximum amount of data
+    ap.add_argument('--update_period', required=True, type=int)         # period between updates to the policy
+    ap.add_argument('--partition', required=True, type=float)             # Integer between 1 and 450 (exclusive),
+
 
     args = vars(ap.parse_args())
     args['arch'] = [64, 64]
@@ -30,6 +32,7 @@ def main():
 
     TRIALS = framework.TRIALS
 
+    assert args['partition'] < 1.0 and args['partition'] > 0.0
 
     test = Test(args)
     start_time = timer.time()
@@ -51,19 +54,16 @@ class Test(framework.Test):
 
 
     def update_noise(self, i, trajs):
+        assert not i == 0
+        assert i % self.params['update_period'] == 0
 
-        if i in self.params['update']:
-            self.optimized_data = self.count_states(trajs)
-            self.lnr.train()
-            new_cov = noise.sample_covariance_trajs(self.env, self.lnr, trajs, 5, self.params['t'])
-            new_cov = new_cov
-            print "Estimated covariance matrix: "
-            print new_cov
-            print np.trace(new_cov)
-            self.sup = GaussianSupervisor(self.net_sup, new_cov)
-            return self.sup
-        else:
-            return self.sup
+        self.lnr.train()
+        new_cov = noise.sample_covariance_trajs(self.env, self.lnr, trajs, self.params['t'])
+        print "Estimated covariance matrix: "
+        print new_cov
+        print "Trace: " + str(np.trace(new_cov))
+        self.sup = GaussianSupervisor(self.net_sup, new_cov)
+        return self.sup
 
 
 
@@ -79,46 +79,67 @@ class Test(framework.Test):
             'sim_errs': [],
             'data_used': [],
         }
+
         trajs = []
-        snapshots = []
         traj_snapshots = []
         self.optimized_data = 0
 
-        for i in range(self.params['iters'][-1]):
-            print "\tIteration: " + str(i)
+        data_states = []
+        data_actions = []
 
-            self.sup = self.update_noise(i, trajs)
+        train_states = []
+        train_i_actions = []
+
+        iteration = 0
+
+        while len(data_states) < self.params['max_data']:
+            print "\tIteration: " + str(iteration)
+            print "\tData states: " + str(len(data_states))
+            assert(len(data_states) == len(data_actions))
+
+            if not iteration == 0 and iteration % self.params['update_period'] == 0:
+                self.sup = self.update_noise(iteration, trajs)
 
             states, i_actions, _, _ = statistics.collect_traj(self.env, self.sup, T, False)
-            states, i_actions, (held_out_states, held_out_actions) = utils.filter_data(self.params, states, i_actions)
+            states, i_actions, _ = utils.filter_data(self.params, states, i_actions)
 
-            rang = np.arange(0, len(held_out_states))
+            data_states += states
+            data_actions += i_actions
+
+            rang = np.arange(0, len(states))
             np.random.shuffle(rang)
-            noise_states, noise_actions = [held_out_states[k] for k in rang[:partition]], [held_out_actions[k] for k in rang[:partition]]
 
+            partition_cutoff = int(partition * len(states))
+            noise_states, noise_actions = [states[k] for k in rang[:partition_cutoff]], [i_actions[k] for k in rang[:partition_cutoff]]
+            states, i_actions = [states[k] for k in rang[partition_cutoff:]], [i_actions[k] for k in rang[partition_cutoff:]]
+
+            train_states += states
+            train_i_actions += i_actions
+
+            self.lnr.set_data(train_states, train_i_actions)
             trajs.append((noise_states, noise_actions))
-            self.lnr.add_data(states, i_actions)
 
-            if ((i + 1) in self.params['iters']):
-                snapshots.append((self.lnr.X[:], self.lnr.y[:]))
-                traj_snapshots.append(self.optimized_data)
+            iteration += 1
 
-        for j in range(len(snapshots)):
-            X, y = snapshots[j]
-            optimized_data = traj_snapshots[j]
-            self.lnr.X, self.lnr.y = X, y
+
+        for sr in self.snapshot_ranges:
+            snapshot_states = data_states[:sr]
+            snapshot_actions = data_actions[:sr]
+
+            self.lnr.set_data(snapshot_states, snapshot_actions)
             self.lnr.train(verbose=True)
-            print "\nData from snapshot: " + str(self.params['iters'][j])
+            print "\nData from snapshot: " + str(sr)
             it_results = self.iteration_evaluation()
-            
+
             results['sup_rewards'].append(it_results['sup_reward_mean'])
             results['rewards'].append(it_results['reward_mean'])
             results['surr_losses'].append(it_results['surr_loss_mean'])
             results['sup_losses'].append(it_results['sup_loss_mean'])
             results['sim_errs'].append(it_results['sim_err_mean'])
-            results['data_used'].append(len(y) + optimized_data)
-            print "\nTrain data: " + str(len(y))
-            print "\n Optimize data: " + str(optimized_data)
+            results['data_used'].append(sr)
+        
+        print "\tTrain data: " + str(len(train_i_actions))
+        print "\tNoise opt data: " + str(self.count_states(trajs))
 
         for key in results.keys():
             results[key] = np.array(results[key])

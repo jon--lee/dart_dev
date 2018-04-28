@@ -44,11 +44,11 @@ def main():
     del params_bc['update']     # Updates are used in behavior cloning
     c = next(color)
     try:
-        means, sems = utils.extract_data(params_bc, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
         plt.plot(iters, means, color=c, linestyle='--')
 
         ptype = 'surr_loss'
-        means, sems = utils.extract_data(params_bc, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
         plt.plot(iters, means, label='Behavior Cloning', color=c)
         plt.fill_between(iters, (means - sems), (means + sems), alpha=.3, color=c)
     except IOError:
@@ -65,11 +65,11 @@ def main():
     del params_dagger['update']
     c = next(color)
     try:
-        means, sems = utils.extract_data(params_dagger, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
         plt.plot(iters, means, color=c, linestyle='--')
 
         ptype = 'surr_loss'
-        means, sems = utils.extract_data(params_dagger, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
         plt.plot(iters, means, label='DAgger', color=c)
         plt.fill_between(iters, (means - sems), (means + sems), alpha=.3, color=c)
     except IOError:
@@ -84,11 +84,11 @@ def main():
     params_dagger_b['beta'] = beta      # You may adjust the prior to whatever you chose.
     c = next(color)
     try:
-        means, sems = utils.extract_data(params_dagger_b, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_dagger_b, title, sub_dir, ptype)
         plt.plot(iters, means, color=c, linestyle='--')
 
         ptype = 'surr_loss'
-        means, sems = utils.extract_data(params_dagger_b, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_dagger_b, title, sub_dir, ptype)
         plt.plot(iters, means, label='DAgger-B', color=c)
         plt.fill_between(iters, (means - sems), (means + sems), alpha=.3, color=c)
     except IOError:
@@ -103,11 +103,11 @@ def main():
     del params_iso['update']
     c = next(color)
     try:
-        means, sems = utils.extract_data(params_iso, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
         plt.plot(iters, means, color=c, linestyle='--')
 
         ptype = 'surr_loss'
-        means, sems = utils.extract_data(params_iso, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
         plt.plot(iters, means, label='Isotropic Noise', color=c)
         plt.fill_between(iters, (means - sems), (means + sems), alpha=.3, color=c)
     except IOError:
@@ -123,11 +123,11 @@ def main():
     params_dart['partition'] = partition
     c = next(color)
     try:
-        means, sems = utils.extract_data(params_dart, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
         plt.plot(iters, means, color=c, linestyle='--')
         
         ptype = 'surr_loss'
-        means, sems = utils.extract_data(params_dart, iters, title, sub_dir, ptype)
+        means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
         plt.plot(iters, means, label='DART ' + str(partition), color=c)
         plt.fill_between(iters, (means - sems), (means + sems), alpha=.3, color=c)
     except IOError:

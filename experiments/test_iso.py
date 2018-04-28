@@ -18,7 +18,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--envname', required=True)                         # OpenAI gym environment
     ap.add_argument('--t', required=True, type=int)                     # time horizon
-    ap.add_argument('--iters', required=True, type=int, nargs='+')      # iterations to evaluate the learner on
+    ap.add_argument('--num_evals', required=True, type=int)             # number of evaluations
+    ap.add_argument('--max_data', required=True, type=int)              # maximum amount of data
     ap.add_argument('--scale', required=True, type=float)               # amount to scale the identity matrix
     
     args = vars(ap.parse_args())
@@ -52,31 +53,38 @@ class Test(framework.Test):
             'sim_errs': [],
             'data_used': [],
         }
-        trajs = []
 
         d = self.params['d']
         new_cov = np.identity(d) * self.params['scale']
         self.sup = GaussianSupervisor(self.net_sup, new_cov)
 
-        snapshots = []
-        for i in range(self.params['iters'][-1]):
-            print "\tIteration: " + str(i)
+        data_states = []
+        data_actions = []
+
+        iteration = 0
+        while len(data_states) < self.params['max_data']:
+            print "\tIteration: " + str(iteration)
+            print "\tData states: " + str(len(data_states))
+            assert(len(data_states) == len(data_actions))
 
 
             states, i_actions, _, _ = statistics.collect_traj(self.env, self.sup, T, False)
-            trajs.append((states, i_actions))
             states, i_actions, _ = utils.filter_data(self.params, states, i_actions)
             
-            self.lnr.add_data(states, i_actions)
+            data_states += states
+            data_actions += i_actions
 
-            if ((i + 1) in self.params['iters']):
-                snapshots.append((self.lnr.X[:], self.lnr.y[:]))
+            self.lnr.set_data(data_states, data_actions)
 
-        for j in range(len(snapshots)):
-            X, y = snapshots[j]
-            self.lnr.X, self.lnr.y = X, y
+            iteration += 1
+
+        for sr in self.snapshot_ranges:
+            snapshot_states = data_states[:sr]
+            snapshot_actions = data_actions[:sr]
+
+            self.lnr.set_data(snapshot_states, snapshot_actions)
             self.lnr.train(verbose=True)
-            print "\nData from snapshot: " + str(self.params['iters'][j])
+            print "\nData from snapshot: " + str(sr)
             it_results = self.iteration_evaluation()
             
             results['sup_rewards'].append(it_results['sup_reward_mean'])
@@ -84,7 +92,7 @@ class Test(framework.Test):
             results['surr_losses'].append(it_results['surr_loss_mean'])
             results['sup_losses'].append(it_results['sup_loss_mean'])
             results['sim_errs'].append(it_results['sim_err_mean'])
-            results['data_used'].append(len(y))
+            results['data_used'].append(sr)
 
 
         for key in results.keys():

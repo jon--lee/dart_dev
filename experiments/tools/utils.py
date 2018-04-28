@@ -65,11 +65,18 @@ def generate_data_dir(title, sub_dir, input_params):
     d = generate_dir(title, sub_dir, input_params)
     return d + '_data/'
 
+def compute_snapshot_ranges(params):
+    max_data = params['max_data']
+    num_evals = params['num_evals']
+    snapshot_ranges = np.linspace(0, max_data, 1+num_evals)[1:].astype(int)
+    return snapshot_ranges
 
-def extract_data(params, iters, title, sub_dir, ptype):
+
+def extract_data(params, title, sub_dir, ptype):
     means, sems = [], []
-    for it in iters:
-        params['it'] = it
+    snapshot_ranges = compute_snapshot_ranges(params)
+    for sr in snapshot_ranges:
+        params['sr'] = sr
 
         path = generate_data_dir(title, sub_dir, params) + 'data.csv'
         data = pd.read_csv(path)
