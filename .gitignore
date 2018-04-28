@@ -1,0 +1,14 @@
+env/
+*.pyc
+*.png
+*.svg
+*.txt
+*.jpg
+*.pdf
+images/
+results/
+*.csv
+*.npy
+gym/
+*.swp
+.DS_Store
