@@ -1,6 +1,6 @@
 # python experiments/plot_loss.py --env Hopper-v1 --t 500 --iters 5 10 15 20 --update 1 7 --save
-python experiments/plot_reward.py --env Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --save
-python experiments/plot_loss.py --env Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --save
+python experiments/plot_reward.py --env Hopper-v1 --t 500 --max_data 250 --num_evals 4 --save
+# python experiments/plot_loss.py --env Hopper-v1 --t 500 --max_data 250 --num_evals 4 --save
 
 
 # python experiments/plot_loss.py --env Hopper-v1 --t 500 --iters 5 10 15 20 --update 1 7 --save

@@ -54,7 +54,6 @@ class Test(framework.Test):
 
 
     def update_noise(self, i, trajs):
-        assert not i == 0
         assert i % self.params['update_period'] == 0
 
         self.lnr.train()
@@ -62,6 +61,7 @@ class Test(framework.Test):
         print "Estimated covariance matrix: "
         print new_cov
         print "Trace: " + str(np.trace(new_cov))
+        # d = env.action_space.shape[0]
         self.sup = GaussianSupervisor(self.net_sup, new_cov)
         return self.sup
 
@@ -97,9 +97,6 @@ class Test(framework.Test):
             print "\tData states: " + str(len(data_states))
             assert(len(data_states) == len(data_actions))
 
-            if not iteration == 0 and iteration % self.params['update_period'] == 0:
-                self.sup = self.update_noise(iteration, trajs)
-
             states, i_actions, _, _ = statistics.collect_traj(self.env, self.sup, T, False)
             states, i_actions, _ = utils.filter_data(self.params, states, i_actions)
 
@@ -118,6 +115,9 @@ class Test(framework.Test):
 
             self.lnr.set_data(train_states, train_i_actions)
             trajs.append((noise_states, noise_actions))
+
+            if iteration % self.params['update_period'] == 0:
+                self.sup = self.update_noise(iteration, trajs)
 
             iteration += 1
 

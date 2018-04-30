@@ -1,8 +1,8 @@
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_bc.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --update_period 5 --beta .5
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dart.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --update_period 5 --partition .1
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --scale 1.0
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_rand.py --envname Hopper-v1 --t 500 --max_data 1000 --num_evals 4 --trace 0.5
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_bc.py --envname Hopper-v1 --t 500 --max_data 250 --num_evals 4
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 250 --num_evals 4 --update_period 2 --beta .5
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dart.py --envname Hopper-v1 --t 500 --max_data 250 --num_evals 4 --update_period 2 --partition .5
+CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 250 --num_evals 4 --scale 1.0
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_rand.py --envname Hopper-v1 --t 500 --max_data 250 --num_evals 4 --trace 0.5
 
 # python experiments/test_bc.py --envname Hopper-v1 --t 500 --iters 5 10 15 20
 # python experiments/test_dart.py --envname Hopper-v1 --t 500 --iters 5 10 15 20 --update 1 7 --partition 50

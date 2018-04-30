@@ -29,6 +29,7 @@ def main():
     params['arch'] = [64, 64]
     params['lr'] = .01
     params['epochs'] = 100
+    update_period = 2
 
     should_save = params['save']
     del params['save']
@@ -61,7 +62,7 @@ def main():
     ptype = 'sup_loss'
     params_dagger = params.copy()
     params_dagger['beta'] = .5      # You may adjust the prior to whatever you chose.
-    params_dagger['update_period'] = 5
+    params_dagger['update_period'] = update_period
     c = next(color)
     try:
         means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
@@ -95,12 +96,12 @@ def main():
 
 
     # DART
-    partition = .1
+    partition = .5
     title = 'test_dart'
     ptype = 'sup_loss'
     params_dart = params.copy()
     params_dart['partition'] = partition
-    params_dart['update_period'] = 5
+    params_dart['update_period'] = update_period
     c = next(color)
     try:
         means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)

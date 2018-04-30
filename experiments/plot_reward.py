@@ -32,6 +32,7 @@ def main():
     params['arch'] = [64, 64]
     params['lr'] = .01
     params['epochs'] = 100
+    update_period = 2
 
     should_save = params['save']
     should_normalize = params['normalize']
@@ -91,7 +92,7 @@ def main():
     ptype = 'reward'
     params_dagger = params.copy()
     params_dagger['beta'] = .5
-    params_dagger['update_period'] = 5
+    params_dagger['update_period'] = update_period
     c = next(color)
     try:
         means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
@@ -99,6 +100,7 @@ def main():
         plt.plot(snapshot_ranges, means, label='DAgger', color=c)
         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=c)
     except IOError:
+        print "Skipping dagger"
         pass
 
 
@@ -114,18 +116,19 @@ def main():
         plt.plot(snapshot_ranges, means, color=c, label='Isotropic')
         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=c)
     except IOError:
+        print "Skipping Iso"
         pass
 
 
     # DART
-    partition = .1
+    partition = .5
     title = 'test_dart'
     ptype = 'reward'
     params_dart = params.copy()
     params_dart['partition'] = partition
-    params_dart['update_period'] = 5
+    params_dart['update_period'] = update_period
     c = next(color)
-    try: 
+    try:
         means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
         means, sems = normalize(means, sems)
         plt.plot(snapshot_ranges, means, label='DART ' + str(partition), color=c)
