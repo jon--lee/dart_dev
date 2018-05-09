@@ -22,7 +22,14 @@ class Test(object):
     def __init__(self, params):
         self.params = params
         self.params['trials'] = TRIALS
+        
         # asserts.enforce(params)
+        print("\n\n")
+        print("######################################")
+        print("### REMEMBER TO ENFORCE ASSERTIONS ###")
+        print("######################################")
+        print("\n\n")
+
         del self.params['trials']
         return
 
