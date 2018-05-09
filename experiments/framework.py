@@ -15,7 +15,7 @@ import sys
 import IPython
 sys.path.append("..")
 
-TRIALS = 5
+TRIALS = 2
 
 class Test(object):
 
