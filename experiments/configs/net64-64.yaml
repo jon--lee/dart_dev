@@ -1,0 +1,6 @@
+type: net
+arch:
+    - 64
+    - 64
+lr: .01
+epochs: 100

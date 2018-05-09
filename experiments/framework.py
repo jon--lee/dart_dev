@@ -4,6 +4,7 @@ from tools.expert import load_policy
 from tools import statistics, noise, utils
 from tools import learner
 from tools.supervisor import GaussianSupervisor, Supervisor
+from sklearn.linear_model import LinearRegression
 import tensorflow as tf
 from net import knet
 import gym
@@ -13,9 +14,44 @@ import scipy.stats
 import asserts
 import sys
 import IPython
+import argparse
+import yaml
 sys.path.append("..")
 
-TRIALS = 2
+TRIALS = 20
+
+def load_config(args):
+    directory = 'experiments/configs/'
+    filename = args['config'] + '.yaml'
+    filepath = os.path.join(directory, filename)
+    f = open(filepath)
+    config = yaml.load(f)
+    f.close()
+
+    for key in config:
+        args[key] = config[key]
+    return args
+
+
+def get_args():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--envname', required=True)                         # OpenAI gym environment
+    ap.add_argument('--t', required=True, type=int)                     # time horizon
+    ap.add_argument('--num_evals', required=True, type=int)             # number of evaluations
+    ap.add_argument('--max_data', required=True, type=int)              # maximum amount of data
+    ap.add_argument('--config', required=True, type=str)
+    return ap
+
+
+
+def startup(title, args, TestClass):
+    test = TestClass(args)
+    start_time = timer.time()
+    test.run_trials(title, TRIALS)
+    end_time = timer.time()
+    print "\n\n\nTotal time: " + str(end_time - start_time) + '\n\n'
+
+
 
 class Test(object):
 
@@ -23,12 +59,12 @@ class Test(object):
         self.params = params
         self.params['trials'] = TRIALS
         
-        # asserts.enforce(params)
-        print("\n\n")
-        print("######################################")
-        print("### REMEMBER TO ENFORCE ASSERTIONS ###")
-        print("######################################")
-        print("\n\n")
+        asserts.enforce(params)
+        # print("\n\n")
+        # print("######################################")
+        # print("### REMEMBER TO ENFORCE ASSERTIONS ###")
+        # print("######################################")
+        # print("\n\n")
 
         del self.params['trials']
         return
@@ -37,7 +73,15 @@ class Test(object):
         """
             Initializes new neural network and learner wrapper
         """
-        est = knet.Network(params['arch'], learning_rate=params['lr'], epochs=params['epochs'])
+        if params['type'] == 'linear':
+            est = LinearRegression()
+        elif params['type'] == 'ridge':
+            est = Ridge(params['lambda'])
+        elif params['type'] == 'net':
+            est = knet.Network(params['arch'], learning_rate=params['lr'], epochs=params['epochs'])
+        else:
+            raise Exception("Learner type not found, see config files.")
+
         lnr = learner.Learner(est)
         return est, lnr
 

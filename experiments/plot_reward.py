@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import itertools
 marker = itertools.cycle((',', '+', '.', 'o', '*', 's')) 
 import IPython
-
+from framework import load_config
 
 def main():
 
@@ -26,12 +26,11 @@ def main():
     ap.add_argument('--normalize', action='store_true', default=False)
     ap.add_argument('--num_evals', required=True, type=int)             # number of evaluations
     ap.add_argument('--max_data', required=True, type=int)              # maximum amount of data
-
+    ap.add_argument('--config', required=True, type=str)
 
     params = vars(ap.parse_args())
-    params['arch'] = [64, 64]
-    params['lr'] = .01
-    params['epochs'] = 100
+    params = load_config(params)
+
     update_period = 4
 
     should_save = params['save']

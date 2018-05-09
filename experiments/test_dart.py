@@ -16,31 +16,16 @@ import framework
 
 def main():
     title = 'test_dart'
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--envname', required=True)                         # OpenAI gym environment
-    ap.add_argument('--t', required=True, type=int)                     # time horizon
-    ap.add_argument('--num_evals', required=True, type=int)             # number of evaluations
-    ap.add_argument('--max_data', required=True, type=int)              # maximum amount of data
+
+    ap = framework.get_args()
     ap.add_argument('--update_period', required=True, type=int)         # period between updates to the policy
     ap.add_argument('--partition', required=True, type=float)             # Integer between 1 and 450 (exclusive),
-
-
     args = vars(ap.parse_args())
-    args['arch'] = [64, 64]
-    args['lr'] = .01
-    args['epochs'] = 100
-
-    TRIALS = framework.TRIALS
-
+    args = framework.load_config(args)
+    
     assert args['partition'] < 1.0 and args['partition'] > 0.0
 
-    test = Test(args)
-    start_time = timer.time()
-    test.run_trials(title, TRIALS)
-    end_time = timer.time()
-
-    print "\n\n\nTotal time: " + str(end_time - start_time) + '\n\n'
-
+    framework.startup(title, args, Test)
 
 
 class Test(framework.Test):

@@ -15,27 +15,13 @@ import framework
 
 def main():
     title = 'test_iso'
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--envname', required=True)                         # OpenAI gym environment
-    ap.add_argument('--t', required=True, type=int)                     # time horizon
-    ap.add_argument('--num_evals', required=True, type=int)             # number of evaluations
-    ap.add_argument('--max_data', required=True, type=int)              # maximum amount of data
-    ap.add_argument('--scale', required=True, type=float)               # amount to scale the identity matrix
     
+    ap = framework.get_args()
+    ap.add_argument('--scale', required=True, type=float)               # amount to scale the identity matrix
     args = vars(ap.parse_args())
-    args['arch'] = [64, 64]
-    args['lr'] = .01
-    args['epochs'] = 100
+    args = framework.load_config(args)
 
-    TRIALS = framework.TRIALS
-
-
-    test = Test(args)
-    start_time = timer.time()
-    test.run_trials(title, TRIALS)
-    end_time = timer.time()
-
-    print "\n\n\nTotal time: " + str(end_time - start_time) + '\n\n'
+    framework.startup(title, args, Test)
 
 
 
