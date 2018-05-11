@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import itertools
 from matplotlib import colors as mcolors
 from framework import load_config
-
+from tools.utils import log
 
 def main():
 
@@ -48,7 +48,7 @@ def main():
         plt.plot(snapshot_ranges, means, label='Behavior Cloning', color=p[0].get_color())
         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
     except IOError:
-        print "Not found."
+        log( "Not found.")
         pass
 
 
@@ -72,7 +72,7 @@ def main():
             plt.plot(snapshot_ranges, means, label='DAgger per: ' + str(update_period), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
-            print "Not found."
+            log( "Not found.")
             pass
 
 
@@ -93,7 +93,7 @@ def main():
     #         plt.plot(snapshot_ranges, means, label='Iso ' + str(scale), color=p[0].get_color())
     #         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
     #     except IOError:
-            # print "Not found."
+            # log("Not found.")
             # pass
 
 
@@ -118,7 +118,7 @@ def main():
             plt.plot(snapshot_ranges, means, label='DART ' + str(partition), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
-            print "Not found."
+            log("Not found.")
             pass
 
 

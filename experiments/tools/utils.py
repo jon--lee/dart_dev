@@ -3,6 +3,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import scipy.stats
 import IPython
+import logging
+import os
+for handler in logging.root.handlers[:]:
+    logging.root.removeHandler(handler)
+logging.basicConfig(filename='output.log', level=logging.DEBUG)
+
+def log(string):
+    logging.debug(string)
+    print(string)
 
 def stringify(lst):
     s = ""

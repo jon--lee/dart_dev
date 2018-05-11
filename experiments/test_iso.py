@@ -12,6 +12,7 @@ from tools.supervisor import GaussianSupervisor
 import argparse
 import time as timer
 import framework
+from tools.utils import log
 
 def main():
     title = 'test_iso'
@@ -49,8 +50,8 @@ class Test(framework.Test):
 
         iteration = 0
         while len(data_states) < self.params['max_data']:
-            print "\tIteration: " + str(iteration)
-            print "\tData states: " + str(len(data_states))
+            log("\tIteration: " + str(iteration))
+            log("\tData states: " + str(len(data_states)))
             assert(len(data_states) == len(data_actions))
 
 
@@ -70,7 +71,7 @@ class Test(framework.Test):
 
             self.lnr.set_data(snapshot_states, snapshot_actions)
             self.lnr.train(verbose=True)
-            print "\nData from snapshot: " + str(sr)
+            log("\nData from snapshot: " + str(sr))
             it_results = self.iteration_evaluation()
             
             results['sup_rewards'].append(it_results['sup_reward_mean'])

@@ -6,6 +6,7 @@ env/
 *.jpg
 *.pdf
 images/
+*.log
 results/
 *.csv
 *.npy

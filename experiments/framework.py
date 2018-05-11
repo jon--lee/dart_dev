@@ -3,6 +3,7 @@ import numpy as np
 from tools.expert import load_policy
 from tools import statistics, noise, utils
 from tools import learner
+from tools.utils import log
 from tools.supervisor import GaussianSupervisor, Supervisor
 import tensorflow as tf
 from models.net import knet
@@ -50,7 +51,7 @@ def startup(title, args, TestClass):
     start_time = timer.time()
     test.run_trials(title, TRIALS)
     end_time = timer.time()
-    print "\n\n\nTotal time: " + str(end_time - start_time) + '\n\n'
+    utils.log("\n\n\nTotal time: " + str(end_time - start_time) + '\n\n')
 
 
 
@@ -61,17 +62,17 @@ class Test(object):
         self.params['trials'] = TRIALS
         
         asserts.enforce(params)
-        # print("\n\n")
-        # print("######################################")
-        # print("### REMEMBER TO ENFORCE ASSERTIONS ###")
-        # print("######################################")
-        # print("\n\n")
+        # utils.log("\n\n")
+        # utils.log("######################################")
+        # utils.log("### REMEMBER TO ENFORCE ASSERTIONS ###")
+        # utils.log("######################################")
+        # utils.log("\n\n")
 
-        # print("\n\n")
-        # print("########################################")
-        # print("### REMEMBER TO TURN OFF TERMINATION ###")
-        # print("########################################")
-        # print("\n\n")
+        # utils.log("\n\n")
+        # utils.log("########################################")
+        # utils.log("### REMEMBER TO TURN OFF TERMINATION ###")
+        # utils.log("########################################")
+        # utils.log("\n\n")
 
         del self.params['trials']
         return
@@ -147,7 +148,7 @@ class Test(object):
         """
         # Asserting limited data per iteration. 
         # See experiments from Ho and Ermon, 2016 for sampling method
-        print "Data: " + str(len(self.lnr.X))
+        log("Data: " + str(len(self.lnr.X)))
         assert len(self.lnr.X) <= self.params['max_data']
         
         it_results = {}
@@ -176,12 +177,12 @@ class Test(object):
         it_results['sup_loss_mean'], it_results['sup_loss_std'] = np.mean(sup_losses), np.std(sup_losses)
         it_results['sim_err_mean'], it_results['sim_err_std'] = np.mean(sim_errs), np.std(sim_errs)
 
-        print "\t\tSup reward: " + str(it_results['sup_reward_mean']) + " +/- " + str(it_results['sup_reward_std'])
-        print "\t\tLnr_reward: " + str(it_results['reward_mean']) + " +/- " + str(it_results['reward_std'])
-        print "\t\tSurr loss: " + str(it_results['surr_loss_mean']) + " +/- " + str(it_results['surr_loss_std'])
-        print "\t\tSup loss: " + str(it_results['sup_loss_mean']) + "+/-" + str(it_results['sup_loss_std'])
-        print "\t\tSim err: " + str(it_results['sim_err_mean']) + " +/- " + str(it_results['sim_err_std'])
-        print "\t\tTrace: " + str(np.trace(self.sup.cov))
+        utils.log("\t\tSup reward: " + str(it_results['sup_reward_mean']) + " +/- " + str(it_results['sup_reward_std']))
+        utils.log("\t\tLnr_reward: " + str(it_results['reward_mean']) + " +/- " + str(it_results['reward_std']))
+        utils.log("\t\tSurr loss: " + str(it_results['surr_loss_mean']) + " +/- " + str(it_results['surr_loss_std']))
+        utils.log("\t\tSup loss: " + str(it_results['sup_loss_mean']) + "+/-" + str(it_results['sup_loss_std']))
+        utils.log("\t\tSim err: " + str(it_results['sim_err_mean']) + " +/- " + str(it_results['sim_err_std']))
+        utils.log("\t\tTrace: " + str(np.trace(self.sup.cov)))
 
         return it_results
 
@@ -222,7 +223,7 @@ class Test(object):
             paths[sr] = save_path
             if not os.path.exists(parent_data_dir):
                 os.makedirs(parent_data_dir)
-            print "Creating directory at " + str(save_path)
+            utils.log("Creating directory at " + str(save_path))
 
 
         m = len(self.snapshot_ranges)
@@ -233,7 +234,7 @@ class Test(object):
         self.total_times_all = np.zeros((TRIALS))
 
         for t in range(TRIALS):
-            print "\n\nTrial: " + str(t)
+            utils.log("\n\nTrial: " + str(t))
             results = self.run_trial()
             total_time = results['end_time'] - results['start_time']
 
@@ -243,7 +244,7 @@ class Test(object):
             self.data_used_all[t, :] = results['data_used']
             self.total_times_all[t] = results['total_time']
 
-            print "trial time: " + str(total_time)
+            utils.log("trial time: " + str(total_time))
             self.save_all(t + 1, paths)
 
 
@@ -268,7 +269,7 @@ class Test(object):
             total_time = total_times_all[:]
             save_path = paths[self.snapshot_ranges[i]]
 
-            print "Saving to: " + str(save_path)
+            utils.log("Saving to: " + str(save_path))
 
 
             d = {'reward': rewards, 'surr_loss': surr_losses, 
@@ -285,16 +286,16 @@ class Test(object):
             data_used_mean, data_used_sem = np.mean(data_used), scipy.stats.sem(data_used)
             total_time_mean, total_time_sem = np.mean(total_time), scipy.stats.sem(total_time)
 
-            print "Iteration " + str(sr) + " results:"
-            print "For iteration: " + str(sr)
-            print "Lnr reward: " + str(reward_mean) + ' +/- ' + str(reward_sem)
-            print "Surr loss: " + str(surr_loss_mean) + " +/- " + str(surr_loss_sem)
-            print "Sup reward: " + str(sup_reward_mean) + " +/- " + str(sup_reward_sem)
-            print "Sup loss: " + str(sup_loss_mean) + " +/- " + str(sup_loss_sem)
-            print "Sim err: " + str(sim_err_mean) + " +/- " + str(sim_err_sem)
-            print "Data used: " + str(data_used_mean) + " +/- " + str(data_used_sem)
-            print "Total time: " + str(total_time_mean) + " +/- " + str(total_time_sem)
-            print "\n\n\n"
+            log("Iteration " + str(sr) + " results:")
+            log("For iteration: " + str(sr))
+            log("Lnr reward: " + str(reward_mean) + ' +/- ' + str(reward_sem))
+            log("Surr loss: " + str(surr_loss_mean) + " +/- " + str(surr_loss_sem))
+            log("Sup reward: " + str(sup_reward_mean) + " +/- " + str(sup_reward_sem))
+            log("Sup loss: " + str(sup_loss_mean) + " +/- " + str(sup_loss_sem))
+            log("Sim err: " + str(sim_err_mean) + " +/- " + str(sim_err_sem))
+            log("Data used: " + str(data_used_mean) + " +/- " + str(data_used_sem))
+            log("Total time: " + str(total_time_mean) + " +/- " + str(total_time_sem))
+            log("\n\n\n")
 
 
 

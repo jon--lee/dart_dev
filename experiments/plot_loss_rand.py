@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import itertools
 marker = itertools.cycle((',', '+', '.', 'o', '*', 's')) 
 color = itertools.cycle(( "#A0B2D8", "#49679E", "#2D3956" , "#F68B20"))
+from tools.utils import log
 
 
 

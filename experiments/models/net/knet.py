@@ -9,6 +9,7 @@ from keras import backend
 import matplotlib.pyplot as plt
 import os
 from sklearn.model_selection import train_test_split
+from tools.utils import log
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
@@ -66,8 +67,8 @@ class Network(estimator.Estimator):
             X, X_test, y, y_test = train_test_split(X, y, test_size=.05)
             history = self.model.fit(X, y, batch_size=self.bsize, epochs = self.epochs, 
                     verbose=0, validation_data=(X_test, y_test))
-            print "Val_loss: " + str(history.history['val_loss'][-1])
-            print "loss: " + str(history.history['loss'][-1])
+            log("Val_loss: " + str(history.history['val_loss'][-1]))
+            log("loss: " + str(history.history['loss'][-1]))
         else:
             X_test, y_test = np.array(X_test), np.array(y_test)
             history = self.model.fit(X, y, batch_size=self.bsize, epochs = self.epochs, 

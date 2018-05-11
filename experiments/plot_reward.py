@@ -11,6 +11,7 @@ import itertools
 marker = itertools.cycle((',', '+', '.', 'o', '*', 's')) 
 import IPython
 from framework import load_config
+from tools.utils import log
 
 def main():
 
@@ -69,7 +70,7 @@ def main():
         means, sems = normalize(means, sems)
         plt.plot(snapshot_ranges, means, label='DART Noisy Supervisor', color='green', linestyle='--')
     except IOError:
-        print "Not found."
+        log("Not found.")
         pass
 
     # BC
@@ -82,7 +83,7 @@ def main():
         p = plt.plot(snapshot_ranges, means, label='Behavior Cloning')
         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
     except IOError:
-        print "Not found."
+        log("Not found.")
         pass
 
 
@@ -102,7 +103,7 @@ def main():
             p = plt.plot(snapshot_ranges, means, label='DAgger ' + str(update_period))
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
-            print "Not found."
+            log("Not found.")
             pass
 
 
@@ -119,7 +120,7 @@ def main():
             p = plt.plot(snapshot_ranges, means, label='Iso ' + str(scale))
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
-            print "Not found."
+            log("Not found.")
             pass
 
 
@@ -139,7 +140,7 @@ def main():
             p = plt.plot(snapshot_ranges, means, label='DART part: ' + str(partition) + ", per: " + str(update_period))
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
-            print "Not found."
+            log("Not found.")
             pass
 
     plt.title("Reward on " + str(params['envname']))

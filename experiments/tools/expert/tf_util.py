@@ -292,16 +292,16 @@ class Module(object):
         self.cache = {}
     def __call__(self, *args):
         if args in self.cache:
-            print("(%s) retrieving value from cache"%self.name)
+            log("(%s) retrieving value from cache"%self.name)
             return self.cache[args]
         with tf.variable_scope(self.name, reuse=not self.first_time):
             scope = tf.get_variable_scope().name
             if self.first_time:
                 self.scope = scope
-                print("(%s) running function for the first time"%self.name)
+                log("(%s) running function for the first time"%self.name)
             else:
                 assert self.scope == scope, "Tried calling function with a different scope"
-                print("(%s) running function on new inputs"%self.name)
+                log("(%s) running function on new inputs"%self.name)
             self.first_time = False
             out = self._call(*args)
         self.cache[args] = out
@@ -476,7 +476,7 @@ def in_session(f):
 
 _PLACEHOLDER_CACHE = {} # name -> (placeholder, dtype, shape)
 def get_placeholder(name, dtype, shape):
-    print("calling get_placeholder", name)
+    log("calling get_placeholder", name)
     if name in _PLACEHOLDER_CACHE:
         out, dtype1, shape1 = _PLACEHOLDER_CACHE[name]
         assert dtype1==dtype and shape1==shape
