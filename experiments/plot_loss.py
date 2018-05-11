@@ -48,6 +48,7 @@ def main():
         plt.plot(snapshot_ranges, means, label='Behavior Cloning', color=p[0].get_color())
         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
     except IOError:
+        print "Not found."
         pass
 
 
@@ -71,32 +72,34 @@ def main():
             plt.plot(snapshot_ranges, means, label='DAgger per: ' + str(update_period), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
+            print "Not found."
             pass
 
 
     # Isotropic noise
-    scales [1.0, 10.0, 20.0]
+    # scales = [1.0, 10.0, 20.0]
 
-    title = 'test_iso'
-    ptype = 'sup_loss'
-    params_iso = params.copy()
-    for scale in scales:
-        params_iso['scale'] = scale
-        try:
-            means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
-            p = plt.plot(snapshot_ranges, means, linestyle='--')
+    # title = 'test_iso'
+    # ptype = 'sup_loss'
+    # params_iso = params.copy()
+    # for scale in scales:
+    #     params_iso['scale'] = scale
+    #     try:
+    #         means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
+    #         p = plt.plot(snapshot_ranges, means, linestyle='--')
 
-            ptype = 'surr_loss'
-            means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
-            plt.plot(snapshot_ranges, means, label='Isotropic Noise', color=p[0].get_color())
-            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
-        except IOError:
-            pass
+    #         ptype = 'surr_loss'
+    #         means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
+    #         plt.plot(snapshot_ranges, means, label='Iso ' + str(scale), color=p[0].get_color())
+    #         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+    #     except IOError:
+            # print "Not found."
+            # pass
 
 
 
     # DART
-    update_periods = [4]
+    update_periods = [2, 4, 8]
     partition = .1
 
     title = 'test_dart'
@@ -115,6 +118,7 @@ def main():
             plt.plot(snapshot_ranges, means, label='DART ' + str(partition), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
+            print "Not found."
             pass
 
 

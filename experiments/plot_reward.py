@@ -69,6 +69,7 @@ def main():
         means, sems = normalize(means, sems)
         plt.plot(snapshot_ranges, means, label='DART Noisy Supervisor', color='green', linestyle='--')
     except IOError:
+        print "Not found."
         pass
 
     # BC
@@ -81,6 +82,7 @@ def main():
         p = plt.plot(snapshot_ranges, means, label='Behavior Cloning')
         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
     except IOError:
+        print "Not found."
         pass
 
 
@@ -100,7 +102,7 @@ def main():
             p = plt.plot(snapshot_ranges, means, label='DAgger ' + str(update_period))
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
-            print "Skipping dagger"
+            print "Not found."
             pass
 
 
@@ -114,15 +116,15 @@ def main():
         try:
             means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
             means, sems = normalize(means, sems)
-            p = plt.plot(snapshot_ranges, means, label='Isotropic ' + str(scale))
+            p = plt.plot(snapshot_ranges, means, label='Iso ' + str(scale))
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
-            print "Skipping Iso"
+            print "Not found."
             pass
 
 
     # DART
-    update_periods = [4]
+    update_periods = [2, 4, 8]
     partition = .1
 
     title = 'test_dart'
@@ -137,6 +139,7 @@ def main():
             p = plt.plot(snapshot_ranges, means, label='DART part: ' + str(partition) + ", per: " + str(update_period))
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
+            print "Not found."
             pass
 
     plt.title("Reward on " + str(params['envname']))

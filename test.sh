@@ -10,30 +10,30 @@
 # CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --scale 20.0
 # CUDA_VISIBLE_DEVICES=$NUM python experiments/test_rand.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --trace 0.5
 
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_bc.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 2 --beta .5 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 4 --beta .5 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 8 --beta .5 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_bc.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 2 --beta .5 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 4 --beta .5 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 8 --beta .5 --config net64-64
 CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dart.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 2 --partition .10 --config net64-64
 CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dart.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 4 --partition .10 --config net64-64
 CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dart.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --update_period 8 --partition .10 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --scale 1.0 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --scale 10.0 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --scale 20.0 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_rand.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --trace 0.5 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --scale 1.0 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --scale 10.0 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --scale 20.0 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_rand.py --envname Walker2d-v1 --t 500 --max_data 400 --num_evals 8 --trace 0.5 --config net64-64
 
 
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_bc.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 2 --beta .5 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 4 --beta .5 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 8 --beta .5 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_bc.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 2 --beta .5 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 4 --beta .5 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dagger.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 8 --beta .5 --config net64-64
 CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dart.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 2 --partition .10 --config net64-64
 CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dart.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 4 --partition .10 --config net64-64
 CUDA_VISIBLE_DEVICES=$NUM python experiments/test_dart.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --update_period 8 --partition .10 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --scale 1.0 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --scale 10.0 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --scale 20.0 --config net64-64
-CUDA_VISIBLE_DEVICES=$NUM python experiments/test_rand.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --trace 0.5 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --scale 1.0 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --scale 10.0 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_iso.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --scale 20.0 --config net64-64
+# CUDA_VISIBLE_DEVICES=$NUM python experiments/test_rand.py --envname Hopper-v1 --t 500 --max_data 400 --num_evals 8 --trace 0.5 --config net64-64
 
 
 
