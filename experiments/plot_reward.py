@@ -85,8 +85,8 @@ def main():
 
 
     # DAgger
- 
     update_periods = [2, 4, 8]
+
     title = 'test_dagger'
     ptype = 'reward'
     params_dagger = params.copy()

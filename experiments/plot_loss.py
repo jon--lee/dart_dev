@@ -53,13 +53,13 @@ def main():
 
 
     # DAgger
-    update_periods = [4]
+    update_periods = [2, 4, 8]
     beta = .5
 
     title = 'test_dagger'
     ptype = 'sup_loss'
     params_dagger = params.copy()
-    params_dagger['beta'] = .5      # You may adjust the prior to whatever you chose.
+    params_dagger['beta'] = beta
     for update_period in update_periods:
         params_dagger['update_period'] = update_period
         try:
@@ -68,35 +68,36 @@ def main():
 
             ptype = 'surr_loss'
             means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
-            plt.plot(snapshot_ranges, means, label='DAgger', color=p[0].get_color())
+            plt.plot(snapshot_ranges, means, label='DAgger per: ' + str(update_period), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
             pass
 
 
     # Isotropic noise
-    scale = 1.0
+    scales [1.0, 10.0, 20.0]
 
     title = 'test_iso'
     ptype = 'sup_loss'
     params_iso = params.copy()
-    params_iso['scale'] = scale
-    try:
-        means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
-        p = plt.plot(snapshot_ranges, means, linestyle='--')
+    for scale in scales:
+        params_iso['scale'] = scale
+        try:
+            means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
+            p = plt.plot(snapshot_ranges, means, linestyle='--')
 
-        ptype = 'surr_loss'
-        means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
-        plt.plot(snapshot_ranges, means, label='Isotropic Noise', color=p[0].get_color())
-        plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
-    except IOError:
-        pass
+            ptype = 'surr_loss'
+            means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
+            plt.plot(snapshot_ranges, means, label='Isotropic Noise', color=p[0].get_color())
+            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+        except IOError:
+            pass
 
 
 
     # DART
     update_periods = [4]
-    partition = .5
+    partition = .1
 
     title = 'test_dart'
     ptype = 'sup_loss'
