@@ -40,8 +40,6 @@ def main():
     ptype = 'data_used'
     
 
-
-
     parts = [5, 10, 50, 450][::-1]
     dart_names = ['DART ' + str(part) for part in parts]
     dart_data = []

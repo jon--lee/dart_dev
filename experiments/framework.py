@@ -6,7 +6,8 @@ from tools import learner
 from tools.supervisor import GaussianSupervisor, Supervisor
 from sklearn.linear_model import LinearRegression
 import tensorflow as tf
-from net import knet
+from models.net import knet
+from models import poly
 import gym
 import os
 import pandas as pd
@@ -64,6 +65,12 @@ class Test(object):
         # print("######################################")
         # print("### REMEMBER TO ENFORCE ASSERTIONS ###")
         # print("######################################")
+        # print("\n\n")
+
+        # print("\n\n")
+        # print("########################################")
+        # print("### REMEMBER TO TURN OFF TERMINATION ###")
+        # print("########################################")
         # print("\n\n")
 
         del self.params['trials']

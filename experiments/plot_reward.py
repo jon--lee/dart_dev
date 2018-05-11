@@ -31,7 +31,6 @@ def main():
     params = vars(ap.parse_args())
     params = load_config(params)
 
-    update_period = 4
 
     should_save = params['save']
     should_normalize = params['normalize']
@@ -76,33 +75,33 @@ def main():
     title = 'test_bc'
     ptype = 'reward'
     params_bc = params.copy()
-    c = next(color)
     try:
         means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
         means, sems = normalize(means, sems)
-        plt.plot(snapshot_ranges, means, label='Behavior Cloning', color=c)
-        plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=c)
+        p = plt.plot(snapshot_ranges, means, label='Behavior Cloning')
+        plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
     except IOError:
         pass
 
 
     # DAgger
-    # update_periods = [2, 4, 8]
-    # for up in update_periods:
-    #     title = 'test_dagger'
-    #     ptype = 'reward'
-    #     params_dagger = params.copy()
-    #     params_dagger['beta'] = .5
-    #     params_dagger['update_period'] = update_period
-    #     c = next(color)
-    # try:
-    #     means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
-    #     means, sems = normalize(means, sems)
-    #     plt.plot(snapshot_ranges, means, label='DAgger ' + str(up), color=c)
-    #     plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=c)
-    # except IOError:
-    #     print "Skipping dagger"
-    #     pass
+ 
+    update_periods = [2, 4, 8]
+    title = 'test_dagger'
+    ptype = 'reward'
+    params_dagger = params.copy()
+    params_dagger['beta'] = .5
+
+    for update_period in update_periods:
+        params_dagger['update_period'] = update_period
+        try:
+            means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
+            means, sems = normalize(means, sems)
+            p = plt.plot(snapshot_ranges, means, label='DAgger ' + str(up))
+            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+        except IOError:
+            print "Skipping dagger"
+            pass
 
 
     # Isotropic noise
@@ -112,32 +111,33 @@ def main():
         ptype = 'reward'
         params_iso = params.copy()
         params_iso['scale'] = scale
-        c = next(color)
         try:
             means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
             means, sems = normalize(means, sems)
-            plt.plot(snapshot_ranges, means, color=c, label='Isotropic ' + str(scale))
-            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=c)
+            p = plt.plot(snapshot_ranges, means, label='Isotropic ' + str(scale))
+            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
             print "Skipping Iso"
             pass
 
 
     # DART
+    update_periods = [4]
     partition = .1
+
     title = 'test_dart'
     ptype = 'reward'
     params_dart = params.copy()
     params_dart['partition'] = partition
-    params_dart['update_period'] = update_period
-    c = 'green' #next(color)
-    try:
-        means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
-        means, sems = normalize(means, sems)
-        plt.plot(snapshot_ranges, means, label='DART ' + str(partition), color=c)
-        plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=c)
-    except IOError:
-        pass
+    for update_period in update_periods:
+        params_dart['update_period'] = update_period
+        try:
+            means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
+            means, sems = normalize(means, sems)
+            p = plt.plot(snapshot_ranges, means, label='DART part: ' + str(partition) + ", per: " + str(update_period))
+            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+        except IOError:
+            pass
 
     plt.title("Reward on " + str(params['envname']))
     plt.legend()
