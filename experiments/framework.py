@@ -4,9 +4,9 @@ from tools.expert import load_policy
 from tools import statistics, noise, utils
 from tools import learner
 from tools.supervisor import GaussianSupervisor, Supervisor
-from sklearn.linear_model import LinearRegression
 import tensorflow as tf
 from models.net import knet
+from models import linear
 from models import poly
 import gym
 import os
@@ -19,7 +19,7 @@ import argparse
 import yaml
 sys.path.append("..")
 
-TRIALS = 20
+TRIALS = 2
 
 def load_config(args):
     directory = 'experiments/configs/'
@@ -60,12 +60,12 @@ class Test(object):
         self.params = params
         self.params['trials'] = TRIALS
         
-        asserts.enforce(params)
-        # print("\n\n")
-        # print("######################################")
-        # print("### REMEMBER TO ENFORCE ASSERTIONS ###")
-        # print("######################################")
-        # print("\n\n")
+        # asserts.enforce(params)
+        print("\n\n")
+        print("######################################")
+        print("### REMEMBER TO ENFORCE ASSERTIONS ###")
+        print("######################################")
+        print("\n\n")
 
         # print("\n\n")
         # print("########################################")
@@ -81,11 +81,11 @@ class Test(object):
             Initializes new neural network and learner wrapper
         """
         if params['type'] == 'linear':
-            est = LinearRegression()
-        elif params['type'] == 'ridge':
-            est = Ridge(params['lambda'])
+            est = linear.Linear()
         elif params['type'] == 'net':
             est = knet.Network(params['arch'], learning_rate=params['lr'], epochs=params['epochs'])
+        elif params['type'] == 'poly':
+            est = poly.Poly(params['degree'])
         else:
             raise Exception("Learner type not found, see config files.")
 

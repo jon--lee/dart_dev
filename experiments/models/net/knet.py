@@ -1,5 +1,6 @@
 import numpy as np
 import keras
+from models import estimator
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras import optimizers
@@ -21,7 +22,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-class Network:
+class Network(estimator.Estimator):
 
     def __init__(self, arch, learning_rate=.01, epochs=600):
         backend.clear_session()
@@ -35,6 +36,9 @@ class Network:
         self.std = None
 
     def whiten(self, X):
+        if self.mean is None or self.std is None:
+            raise Exception("Called whiten but mean or std not set yet.")
+
         X = X - self.mean
         X = X / self.std
         locs = np.isnan(X)

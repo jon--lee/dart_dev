@@ -79,11 +79,7 @@ def extract_data(params, title, sub_dir, ptype):
         params['sr'] = sr
 
         path = generate_data_dir(title, sub_dir, params) + 'data.csv'
-        try:
-            data = pd.read_csv(path)
-        except:
-            print "Unable to find path: " + str(path)
-            exit()
+        print "Path: " + str(path)
         arr = np.array(data[ptype])
 
         mean, sem = np.mean(arr), scipy.stats.sem(arr)
