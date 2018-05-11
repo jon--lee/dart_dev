@@ -97,7 +97,7 @@ def main():
         try:
             means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
             means, sems = normalize(means, sems)
-            p = plt.plot(snapshot_ranges, means, label='DAgger ' + str(up))
+            p = plt.plot(snapshot_ranges, means, label='DAgger ' + str(update_period))
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
             print "Skipping dagger"

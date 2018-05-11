@@ -80,6 +80,7 @@ def extract_data(params, title, sub_dir, ptype):
 
         path = generate_data_dir(title, sub_dir, params) + 'data.csv'
         print "Path: " + str(path)
+        data = pd.read_csv(path)
         arr = np.array(data[ptype])
 
         mean, sem = np.mean(arr), scipy.stats.sem(arr)

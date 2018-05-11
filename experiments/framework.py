@@ -19,7 +19,7 @@ import argparse
 import yaml
 sys.path.append("..")
 
-TRIALS = 2
+TRIALS = 20
 
 def load_config(args):
     directory = 'experiments/configs/'
@@ -60,12 +60,12 @@ class Test(object):
         self.params = params
         self.params['trials'] = TRIALS
         
-        # asserts.enforce(params)
-        print("\n\n")
-        print("######################################")
-        print("### REMEMBER TO ENFORCE ASSERTIONS ###")
-        print("######################################")
-        print("\n\n")
+        asserts.enforce(params)
+        # print("\n\n")
+        # print("######################################")
+        # print("### REMEMBER TO ENFORCE ASSERTIONS ###")
+        # print("######################################")
+        # print("\n\n")
 
         # print("\n\n")
         # print("########################################")
