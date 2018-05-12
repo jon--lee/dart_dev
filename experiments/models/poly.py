@@ -11,7 +11,7 @@ class Poly(linear.Linear):
 
     def __init__(self, degree):
         self.degree = degree
-        self.transform = PolynomialFeatures(degree=2)
+        self.transform = PolynomialFeatures(degree=degree)
 
     def fit(self, X, y):
         X, y = np.array(X), np.array(y)

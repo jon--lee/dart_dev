@@ -36,20 +36,26 @@ def main():
     plt.style.use('ggplot')
 
     # Behavior Cloning loss on sup distr
+    degrees = [2, 3, 5, 10, 20]
+    configs = ['poly' + str(d) for d in degrees]
+
     title = 'test_bc'
     ptype = 'sup_loss'
     params_bc = params.copy()
-    try:
-        means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
-        p = plt.plot(snapshot_ranges, means, linestyle='--')
+    for config, degree in zip(configs, degrees):
+        params_bc['config'] = config
+        params_bc['degree'] = degree
+        try:
+            means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
+            p = plt.plot(snapshot_ranges, means, linestyle='--')
 
-        ptype = 'surr_loss'
-        means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
-        plt.plot(snapshot_ranges, means, label='Behavior Cloning', color=p[0].get_color())
-        plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
-    except IOError:
-        log( "Not found.")
-        pass
+            ptype = 'surr_loss'
+            means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
+            plt.plot(snapshot_ranges, means, label='Behavior Cloning', color=p[0].get_color())
+            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+        except IOError:
+            log( "Not found.")
+            pass
 
 
 

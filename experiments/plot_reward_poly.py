@@ -15,6 +15,9 @@ from tools.utils import log
 
 def main():
 
+    # In the event that you change the sub_directory within results, change this to match it.
+    color = itertools.cycle(( "#FCB716", "#2D3956", "#A0B2D8", "#988ED5", "#F68B20"))
+
     sub_dir = 'experts'
 
     ap = argparse.ArgumentParser()
@@ -71,17 +74,23 @@ def main():
         pass
 
     # BC
+    degrees = [2, 3, 5, 10, 20]
+    configs = ['poly' + str(d) for d in degrees]
+
     title = 'test_bc'
     ptype = 'reward'
     params_bc = params.copy()
-    try:
-        means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
-        means, sems = normalize(means, sems)
-        p = plt.plot(snapshot_ranges, means, label='Behavior Cloning deg: ' + str(degree))
-        plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
-    except IOError:
-        log("Not found.")
-        pass
+    for config, degree in zip(configs, degrees):
+        params_bc['config'] = config
+        params_bc['degree'] = degree
+        try:
+            means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
+            means, sems = normalize(means, sems)
+            p = plt.plot(snapshot_ranges, means, label='Behavior Cloning deg: ' + str(degree))
+            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+        except IOError:
+            log("Not found.")
+            pass
 
 
     # DAgger
