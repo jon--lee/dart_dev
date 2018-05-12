@@ -35,18 +35,15 @@ def sample_covariance_sup(env, lnr, sup, samples, T):
 def sample_covariance_trajs(env, lnr, trajs, T):
     d = env.action_space.shape[0]
     cov = np.zeros((d, d))
-    # trajs = np.array(trajs[len(trajs) - samples:])
-    # trajs = np.array(trajs[:])
-    # trajs = np.array(trajs[len(trajs) - samples * 2:])
-    # indices = np.random.choice(len(trajs), min(len(trajs), samples), replace=False)
-    # trajs = trajs[indices]
+    
     for states, i_actions in trajs:
-        sup_actions = np.array([a for a in i_actions])
-        lnr_actions = np.array([lnr.intended_action(s) for s in states])
         length = len(i_actions)
+        if not length == 0:
+            sup_actions = np.array([a for a in i_actions])
+            lnr_actions = np.array([lnr.intended_action(s) for s in states])
 
-        diff = sup_actions - lnr_actions
-        cov = cov + np.dot(diff.T, diff) / float(length)
+            diff = sup_actions - lnr_actions
+            cov = cov + np.dot(diff.T, diff) / float(length)
 
 
     print "Trajs: " + str(len(trajs))
