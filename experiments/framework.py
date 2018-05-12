@@ -7,8 +7,7 @@ from tools.utils import log
 from tools.supervisor import GaussianSupervisor, Supervisor
 import tensorflow as tf
 from models.net import knet
-from models import linear
-from models import poly
+from models import linear, kernel_poly, poly
 import gym
 import os
 import pandas as pd
@@ -87,6 +86,8 @@ class Test(object):
             est = knet.Network(params['arch'], learning_rate=params['lr'], epochs=params['epochs'])
         elif params['type'] == 'poly':
             est = poly.Poly(params['degree'])
+        elif params['type'] == 'kernel_poly':
+            est = kernel_poly.KernelPoly(params['degree'])
         else:
             raise Exception("Learner type not found, see config files.")
 
