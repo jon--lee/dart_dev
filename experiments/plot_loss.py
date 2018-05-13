@@ -32,6 +32,7 @@ def main():
     del params['save']
     snapshot_ranges = utils.compute_snapshot_ranges(params)
 
+    update_periods = [2, 4, 8, 16]
 
     plt.style.use('ggplot')
 
@@ -54,7 +55,6 @@ def main():
 
 
     # DAgger
-    update_periods = [2, 4, 8]
     beta = .5
 
     title = 'test_dagger'
@@ -99,7 +99,6 @@ def main():
 
 
     # DART
-    update_periods = [2, 4, 8]
     partition = .1
 
     title = 'test_dart'

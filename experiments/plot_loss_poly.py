@@ -36,7 +36,7 @@ def main():
     plt.style.use('ggplot')
 
     # Behavior Cloning loss on sup distr
-    degrees = [2, 3, 5, 10, 20]
+    degrees = [2, 3, 5]
     configs = ['poly' + str(d) for d in degrees]
 
     title = 'test_bc'
@@ -51,7 +51,7 @@ def main():
 
             ptype = 'surr_loss'
             means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
-            plt.plot(snapshot_ranges, means, label='Behavior Cloning', color=p[0].get_color())
+            plt.plot(snapshot_ranges, means, label='Behavior Cloning degree: ' + str(degree), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
             log( "Not found.")

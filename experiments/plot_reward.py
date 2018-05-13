@@ -37,6 +37,8 @@ def main():
 
     snapshot_ranges = utils.compute_snapshot_ranges(params)
 
+    update_periods = [2, 4, 8, 16]
+
     plt.style.use('ggplot')
 
     # Best supervisor reward
@@ -77,7 +79,7 @@ def main():
     try:
         means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
         means, sems = normalize(means, sems)
-        p = plt.plot(snapshot_ranges, means, label='Behavior Cloning deg: ' + str(degree))
+        p = plt.plot(snapshot_ranges, means, label='Behavior Cloning')
         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
     except IOError:
         log("Not found.")
@@ -85,8 +87,6 @@ def main():
 
 
     # DAgger
-    update_periods = [2, 4, 8]
-
     title = 'test_dagger'
     ptype = 'reward'
     params_dagger = params.copy()
@@ -122,7 +122,6 @@ def main():
 
 
     # DART
-    update_periods = [2, 4, 8]
     partition = .1
 
     title = 'test_dart'
