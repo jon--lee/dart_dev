@@ -14,6 +14,7 @@ import scipy.stats
 import time as timer
 import framework
 from tools.utils import log
+import IPython
 
 def main():
     title = 'test_dart'
@@ -76,8 +77,9 @@ class Test(framework.Test):
         train_states = []
         train_i_actions = []
 
-        iteration = 0
+        supervisors = []
 
+        iteration = 0
         while len(data_states) < self.params['max_data']:
             log("\tIteration: " + str(iteration))
             log("\tData states: " + str(len(data_states)))
@@ -98,6 +100,7 @@ class Test(framework.Test):
 
             train_states += states
             train_i_actions += i_actions
+            supervisors += [self.sup] * len(states)
 
             self.lnr.set_data(train_states, train_i_actions)
             trajs.append((noise_states, noise_actions))
@@ -114,6 +117,7 @@ class Test(framework.Test):
 
             self.lnr.set_data(snapshot_states, snapshot_actions)
             self.lnr.train(verbose=True)
+            self.sup = supervisors[:sr-1]
             log("\nData from snapshot: " + str(sr))
             it_results = self.iteration_evaluation()
 
