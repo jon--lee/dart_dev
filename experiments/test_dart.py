@@ -120,7 +120,7 @@ class Test(framework.Test):
 
             self.lnr.set_data(snapshot_states, snapshot_actions)
             self.lnr.train(verbose=True)
-            self.sup = supervisors[:sr-1]
+            self.sup = supervisors[sr-1]
             log("\nData from snapshot: " + str(sr))
             it_results = self.iteration_evaluation()
 
