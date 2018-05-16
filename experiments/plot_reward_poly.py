@@ -74,7 +74,7 @@ def main():
         pass
 
     # BC
-    degrees = [2, 3, 5]
+    degrees = [2, 3, 5, 6, 7]
     configs = ['poly' + str(d) for d in degrees]
 
     title = 'test_bc'

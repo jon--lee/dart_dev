@@ -80,6 +80,8 @@ class Test(framework.Test):
         supervisors = []
 
         iteration = 0
+        last_data_update = 0
+
         while len(data_states) < self.params['max_data']:
             log("\tIteration: " + str(iteration))
             log("\tData states: " + str(len(data_states)))
@@ -105,8 +107,11 @@ class Test(framework.Test):
             self.lnr.set_data(train_states, train_i_actions)
             trajs.append((noise_states, noise_actions))
 
-            if iteration % self.params['update_period'] == 0:
+            if iteration == 0 or len(data_states) >= (last_data_update + self.params['update_period']):
                 self.sup = self.update_noise(iteration, trajs)
+
+                difference = (len(data_states) - last_data_update) / self.params['update_period']
+                last_data_update += difference * self.params['update_period']
 
             iteration += 1
 

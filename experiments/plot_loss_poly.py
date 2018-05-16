@@ -36,8 +36,9 @@ def main():
     plt.style.use('ggplot')
 
     # Behavior Cloning loss on sup distr
-    degrees = [2, 3, 5]
+    degrees = [2, 3, 5, 6, 7]
     configs = ['poly' + str(d) for d in degrees]
+    upper_bound = 0
 
     title = 'test_bc'
     ptype = 'sup_loss'
@@ -53,6 +54,8 @@ def main():
             means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
             plt.plot(snapshot_ranges, means, label='Behavior Cloning degree: ' + str(degree), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+
+            upper_bound = max(np.max(means), upper_bound)
         except IOError:
             log( "Not found.")
             pass
@@ -77,6 +80,8 @@ def main():
             means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
             plt.plot(snapshot_ranges, means, label='DAgger per: ' + str(update_period), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+
+            upper_bound = max(np.max(means), upper_bound)
         except IOError:
             log( "Not found.")
             pass
@@ -123,6 +128,8 @@ def main():
             means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
             plt.plot(snapshot_ranges, means, label='DART part: ' + str(partition) + ", per: " + str(update_period), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+
+            upper_bound = max(np.max(means), upper_bound)
         except IOError:
             log("Not found.")
             pass
@@ -133,6 +140,10 @@ def main():
     plt.legend()
     plt.xticks(snapshot_ranges)
     plt.legend(loc='upper right')
+
+    upper_bound = min(20, upper_bound)
+    plt.ylim(0, upper_bound)
+
 
     save_path = 'images/'
     if not os.path.exists(save_path):

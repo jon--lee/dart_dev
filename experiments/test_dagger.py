@@ -50,6 +50,7 @@ class Test(framework.Test):
         data_actions = []
 
         iteration = 0
+        last_data_update = 0
 
         while len(data_states) < self.params['max_data']:
             log("\tIteration: " + str(iteration))
@@ -70,8 +71,11 @@ class Test(framework.Test):
 
             self.lnr.set_data(data_states, data_actions)
 
-            if iteration % self.params['update_period'] == 0:
+            if iteration == 0 or len(data_states) >= (last_data_update + self.params['update_period']):
                 self.lnr.train(verbose=True)
+
+                difference = (len(data_states) - last_data_update) / self.params['update_period']
+                last_data_update += difference * self.params['update_period']
 
             iteration += 1
 
