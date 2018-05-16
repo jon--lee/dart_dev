@@ -90,6 +90,7 @@ class Test(framework.Test):
 
             data_states += states
             data_actions += i_actions
+            supervisors += [self.sup] * len(states)
 
             rang = np.arange(0, len(states))
             np.random.shuffle(rang)
@@ -100,7 +101,6 @@ class Test(framework.Test):
 
             train_states += states
             train_i_actions += i_actions
-            supervisors += [self.sup] * len(states)
 
             self.lnr.set_data(train_states, train_i_actions)
             trajs.append((noise_states, noise_actions))
