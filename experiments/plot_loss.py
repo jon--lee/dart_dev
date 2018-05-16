@@ -32,7 +32,7 @@ def main():
     del params['save']
     snapshot_ranges = utils.compute_snapshot_ranges(params)
 
-    update_periods = [2, 4, 8, 16]
+    update_periods = [2, 8, 16]
 
     plt.style.use('ggplot')
 
@@ -42,6 +42,7 @@ def main():
     params_bc = params.copy()
     try:
         means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
+        # p = plt.plot([0], [0], linestyle='--')
         p = plt.plot(snapshot_ranges, means, linestyle='--')
 
         ptype = 'surr_loss'
@@ -65,6 +66,7 @@ def main():
         params_dagger['update_period'] = update_period
         try:
             means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
+            # p = plt.plot([0], [0], linestyle='--')
             p = plt.plot(snapshot_ranges, means, linestyle='--')
 
             ptype = 'surr_loss'
@@ -109,6 +111,12 @@ def main():
     for update_period in update_periods:
         params_dart['update_period'] = update_period
         try:
+
+            # ptype = 'sim_err'
+            # means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
+            # p = plt.plot(snapshot_ranges, means, linestyle='--')
+
+            ptype = 'sup_loss'
             means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
             p = plt.plot(snapshot_ranges, means, linestyle='--')
             
@@ -116,9 +124,13 @@ def main():
             means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
             plt.plot(snapshot_ranges, means, label='DART part: ' + str(partition) + ", per: " + str(update_period), color=p[0].get_color())
             plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+
+
         except IOError:
             log("Not found.")
             pass
+
+
 
 
 

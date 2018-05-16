@@ -37,7 +37,7 @@ def main():
 
     snapshot_ranges = utils.compute_snapshot_ranges(params)
 
-    update_periods = [2, 4, 8, 16]
+    update_periods = [2, 8, 16]
 
     plt.style.use('ggplot')
 
