@@ -41,8 +41,6 @@ class Test(framework.Test):
 
 
     def update_noise(self, i, trajs):
-        assert i % self.params['update_period'] == 0
-
         self.lnr.train()
         new_cov = noise.sample_covariance_trajs(self.env, self.lnr, trajs, self.params['t'])
         log("Estimated covariance matrix: ")
