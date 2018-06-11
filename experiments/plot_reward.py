@@ -37,7 +37,9 @@ def main():
 
     snapshot_ranges = utils.compute_snapshot_ranges(params)
 
-    update_periods = [2, 8, 16]
+    update_periods = [50, 300]
+    if params['envname'] == 'Humanoid-v1':
+        update_periods = [1000, 200]
 
     plt.style.use('ggplot')
 

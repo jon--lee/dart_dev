@@ -32,7 +32,10 @@ def main():
     del params['save']
     snapshot_ranges = utils.compute_snapshot_ranges(params)
 
-    update_periods = [2, 8, 16]
+
+    update_periods = [50, 300]
+    if params['envname'] == 'Humanoid-v1':
+        update_periods = [1000, 200]
 
     plt.style.use('ggplot')
 
@@ -112,13 +115,14 @@ def main():
         params_dart['update_period'] = update_period
         try:
 
-            # ptype = 'sim_err'
-            # means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
-            # p = plt.plot(snapshot_ranges, means, linestyle='--')
 
             ptype = 'sup_loss'
             means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
             p = plt.plot(snapshot_ranges, means, linestyle='--')
+
+            ptype = 'sim_err'
+            means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
+            plt.plot(snapshot_ranges, means, linestyle=':', color=p[0].get_color())
             
             ptype = 'surr_loss'
             means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
