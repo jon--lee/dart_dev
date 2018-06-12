@@ -34,8 +34,16 @@ def main():
 
 
     update_periods = [50, 300]
+    update_periods_dart = [300]
+    update_periods_dagger = [50, 300]
+
     if params['envname'] == 'Humanoid-v1':
-        update_periods = [1000, 200]
+        update_periods = [200, 1000]
+        update_periods_dart = [1000]
+        update_periods_dagger = [200, 1000]
+
+
+
 
     plt.style.use('ggplot')
 
@@ -65,7 +73,7 @@ def main():
     ptype = 'sup_loss'
     params_dagger = params.copy()
     params_dagger['beta'] = beta
-    for update_period in update_periods:
+    for update_period in update_periods_dagger:
         params_dagger['update_period'] = update_period
         try:
             means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
@@ -83,23 +91,24 @@ def main():
 
     # Isotropic noise
     # scales = [1.0, 10.0, 20.0]
+    scales = [1.0]
 
-    # title = 'test_iso'
-    # ptype = 'sup_loss'
-    # params_iso = params.copy()
-    # for scale in scales:
-    #     params_iso['scale'] = scale
-    #     try:
-    #         means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
-    #         p = plt.plot(snapshot_ranges, means, linestyle='--')
+    title = 'test_iso'
+    ptype = 'sup_loss'
+    params_iso = params.copy()
+    for scale in scales:
+        params_iso['scale'] = scale
+        try:
+            means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
+            p = plt.plot(snapshot_ranges, means, linestyle='--')
 
-    #         ptype = 'surr_loss'
-    #         means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
-    #         plt.plot(snapshot_ranges, means, label='Iso ' + str(scale), color=p[0].get_color())
-    #         plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
-    #     except IOError:
-            # log("Not found.")
-            # pass
+            ptype = 'surr_loss'
+            means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
+            plt.plot(snapshot_ranges, means, label='Iso ' + str(scale), color=p[0].get_color())
+            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+        except IOError:
+            log("Not found.")
+            pass
 
 
 
@@ -111,7 +120,7 @@ def main():
     params_dart = params.copy()
     params_dart['partition'] = partition
 
-    for update_period in update_periods:
+    for update_period in update_periods_dart:
         params_dart['update_period'] = update_period
         try:
 
@@ -120,9 +129,9 @@ def main():
             means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
             p = plt.plot(snapshot_ranges, means, linestyle='--')
 
-            ptype = 'sim_err'
-            means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
-            plt.plot(snapshot_ranges, means, linestyle=':', color=p[0].get_color())
+            # ptype = 'sim_err'
+            # means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
+            # plt.plot(snapshot_ranges, means, linestyle=':', color=p[0].get_color())
             
             ptype = 'surr_loss'
             means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)

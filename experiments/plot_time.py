@@ -49,21 +49,15 @@ def main():
     plt.style.use('ggplot')
 
     # Best supervisor reward
-    title = 'test_bc'
-    ptype = 'sup_reward'
-    params_bc = params.copy()
-    means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
-    if not should_normalize:
-        plt.plot(snapshot_ranges, means, label='Supervisor', color='green')
+    # title = 'test_bc'
+    # ptype = 'sup_reward'
+    # params_bc = params.copy()
+    # means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
+    # if not should_normalize:
+    #     plt.plot(snapshot_ranges, means, label='Supervisor', color='green')
 
-    sup_means, sup_sems = means, sems
     def normalize(means, sems):
-        if should_normalize:
-            means = means / sup_means
-            sems = sems / sup_means
-            return means, sems
-        else:
-            return means, sems
+        return means, sems
 
 
 
@@ -85,7 +79,7 @@ def main():
 
     # BC
     title = 'test_bc'
-    ptype = 'reward'
+    ptype = 'total_time'
     params_bc = params.copy()
     try:
         means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
@@ -99,7 +93,7 @@ def main():
 
     # DAgger
     title = 'test_dagger'
-    ptype = 'reward'
+    ptype = 'total_time'
     params_dagger = params.copy()
     params_dagger['beta'] = .5
 
@@ -121,7 +115,7 @@ def main():
     
     for scale in scales: 
         title = 'test_iso'
-        ptype = 'reward'
+        ptype = 'total_time'
         params_iso = params.copy()
         params_iso['scale'] = scale
         try:
@@ -138,7 +132,7 @@ def main():
     partition = .1
 
     title = 'test_dart'
-    ptype = 'reward'
+    ptype = 'total_time'
     params_dart = params.copy()
     params_dart['partition'] = partition
     for update_period in update_periods_dart:

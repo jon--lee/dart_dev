@@ -53,8 +53,8 @@ def main():
     ptype = 'sup_reward'
     params_bc = params.copy()
     means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
-    if not should_normalize:
-        plt.plot(snapshot_ranges, means, label='Supervisor', color='green')
+    # if not should_normalize:
+    #     plt.plot(snapshot_ranges, means, label='Supervisor', color='green')
 
     sup_means, sup_sems = means, sems
     def normalize(means, sems):
@@ -67,7 +67,7 @@ def main():
 
 
 
-    # Noisy supervisor reward using DART
+    # # Noisy supervisor reward using DART
     # partition = .1
     # update_period = update_periods_dart[0]
     # title = 'test_dart'
@@ -85,7 +85,7 @@ def main():
 
     # BC
     title = 'test_bc'
-    ptype = 'reward'
+    ptype = 'sup_reward'
     params_bc = params.copy()
     try:
         means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
@@ -121,7 +121,7 @@ def main():
     
     for scale in scales: 
         title = 'test_iso'
-        ptype = 'reward'
+        ptype = 'sup_reward'
         params_iso = params.copy()
         params_iso['scale'] = scale
         try:
@@ -138,7 +138,7 @@ def main():
     partition = .1
 
     title = 'test_dart'
-    ptype = 'reward'
+    ptype = 'sup_reward'
     params_dart = params.copy()
     params_dart['partition'] = partition
     for update_period in update_periods_dart:
