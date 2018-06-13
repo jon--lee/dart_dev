@@ -42,6 +42,7 @@ class Test(framework.Test):
             'sim_errs': [],
             'data_used': [],
         }
+        start_time = timer.time()
         trajs = []
 
         beta = self.params['beta']
@@ -79,6 +80,7 @@ class Test(framework.Test):
 
             iteration += 1
 
+        end_time = timer.time()
 
         for sr in self.snapshot_ranges:
             snapshot_states = data_states[:sr]
@@ -99,6 +101,7 @@ class Test(framework.Test):
 
         for key in results.keys():
             results[key] = np.array(results[key])
+        results['total_time'] = end_time - start_time
         return results
 
 

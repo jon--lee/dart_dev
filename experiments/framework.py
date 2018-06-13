@@ -127,15 +127,9 @@ class Test(object):
             Run a trial by first preprocessing the parameters and initializing
             the supervisor and learner. Then run each iterations (not implemented here)
         """
-        start_time = timer.time()
 
         self.prologue()
         results = self.run_iters()
-
-        end_time = timer.time()
-        results['start_time'] = start_time
-        results['end_time'] = end_time
-        results['total_time'] = end_time - start_time
 
         return results
 
@@ -237,7 +231,7 @@ class Test(object):
         for t in range(TRIALS):
             utils.log("\n\nTrial: " + str(t))
             results = self.run_trial()
-            total_time = results['end_time'] - results['start_time']
+            total_time = results['total_time']
 
             self.rewards_all[t, :], self.sup_rewards_all[t, :] = results['rewards'], results['sup_rewards']
             self.surr_losses_all[t, :], self.sup_losses_all[t, :] = results['surr_losses'], results['sup_losses']
