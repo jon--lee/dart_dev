@@ -84,28 +84,28 @@ class Test(framework.Test):
 
         for sr in self.snapshot_ranges:
             # # Uncomment for actual evaluations
-            # snapshot_states = data_states[:sr]
-            # snapshot_actions = data_actions[:sr]
+            snapshot_states = data_states[:sr]
+            snapshot_actions = data_actions[:sr]
 
-            # self.lnr.set_data(snapshot_states, snapshot_actions)
-            # self.lnr.train(verbose=True)
-            # log("\nData from snapshot: " + str(sr))
-            # it_results = self.iteration_evaluation()
+            self.lnr.set_data(snapshot_states, snapshot_actions)
+            self.lnr.train(verbose=True)
+            log("\nData from snapshot: " + str(sr))
+            it_results = self.iteration_evaluation()
             
-            # results['sup_rewards'].append(it_results['sup_reward_mean'])
-            # results['rewards'].append(it_results['reward_mean'])
-            # results['surr_losses'].append(it_results['surr_loss_mean'])
-            # results['sup_losses'].append(it_results['sup_loss_mean'])
-            # results['sim_errs'].append(it_results['sim_err_mean'])
-            # results['data_used'].append(sr)
+            results['sup_rewards'].append(it_results['sup_reward_mean'])
+            results['rewards'].append(it_results['reward_mean'])
+            results['surr_losses'].append(it_results['surr_loss_mean'])
+            results['sup_losses'].append(it_results['sup_loss_mean'])
+            results['sim_errs'].append(it_results['sim_err_mean'])
+            results['data_used'].append(sr)
 
             # Uncomment for time trials
-            results['sup_rewards'].append(0)
-            results['rewards'].append(0)
-            results['surr_losses'].append(0)
-            results['sup_losses'].append(0)
-            results['sim_errs'].append(0)
-            results['data_used'].append(0)
+            # results['sup_rewards'].append(0)
+            # results['rewards'].append(0)
+            # results['surr_losses'].append(0)
+            # results['sup_losses'].append(0)
+            # results['sim_errs'].append(0)
+            # results['data_used'].append(0)
 
 
         for key in results.keys():
