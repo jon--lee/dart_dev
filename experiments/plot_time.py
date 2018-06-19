@@ -48,34 +48,10 @@ def main():
 
     plt.style.use('ggplot')
 
-    # Best supervisor reward
-    # title = 'test_bc'
-    # ptype = 'sup_reward'
-    # params_bc = params.copy()
-    # means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
-    # if not should_normalize:
-    #     plt.plot(snapshot_ranges, means, label='Supervisor', color='green')
-
     def normalize(means, sems):
         return means, sems
 
-
-
-    # Noisy supervisor reward using DART
-    # partition = .1
-    # update_period = update_periods_dart[0]
-    # title = 'test_dart'
-    # ptype = 'sup_reward'
-    # params_dart = params.copy()
-    # params_dart['partition'] = partition
-    # params_dart['update_period'] = update_period
-    # try:
-    #     means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
-    #     means, sems = normalize(means, sems)
-    #     plt.plot(snapshot_ranges, means, label='DART Noisy Supervisor', color='green', linestyle='--')
-    # except IOError:
-    #     log("Not found.")
-    #     pass
+    all_means = []
 
     # BC
     title = 'test_bc'
@@ -84,8 +60,9 @@ def main():
     try:
         means, sems = utils.extract_data(params_bc, title, sub_dir, ptype)
         means, sems = normalize(means, sems)
-        p = plt.plot(snapshot_ranges, means, label='Behavior Cloning')
-        plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+        all_means.append(means[0])
+        # p = plt.plot(snapshot_ranges, means, label='Behavior Cloning')
+        # plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
     except IOError:
         log("Not found.")
         pass
@@ -102,8 +79,9 @@ def main():
         try:
             means, sems = utils.extract_data(params_dagger, title, sub_dir, ptype)
             means, sems = normalize(means, sems)
-            p = plt.plot(snapshot_ranges, means, label='DAgger ' + str(update_period))
-            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+            all_means.append(means[0])
+            # p = plt.plot(snapshot_ranges, means, label='DAgger ' + str(update_period))
+            # plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
             log("Not found.")
             pass
@@ -121,8 +99,9 @@ def main():
         try:
             means, sems = utils.extract_data(params_iso, title, sub_dir, ptype)
             means, sems = normalize(means, sems)
-            p = plt.plot(snapshot_ranges, means, label='Iso ' + str(scale))
-            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+            all_means.append(means[0])
+            # p = plt.plot(snapshot_ranges, means, label='Iso ' + str(scale))
+            # plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
             log("Not found.")
             pass
@@ -140,27 +119,28 @@ def main():
         try:
             means, sems = utils.extract_data(params_dart, title, sub_dir, ptype)
             means, sems = normalize(means, sems)
-            p = plt.plot(snapshot_ranges, means, label='DART part: ' + str(partition) + ", per: " + str(update_period))
-            plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
+            all_means.append(means[0])
+            # p = plt.plot(snapshot_ranges, means, label='DART part: ' + str(partition) + ", per: " + str(update_period))
+            # plt.fill_between(snapshot_ranges, (means - sems), (means + sems), alpha=.3, color=p[0].get_color())
         except IOError:
             log("Not found.")
             pass
 
-    # plt.title("Reward on " + str(params['envname']))
-    # plt.legend()
-    plt.xticks(snapshot_ranges)
-    if should_normalize:
-        plt.ylim(0, 1.05)
-        plt.yticks([0.0, 0.25, 0.5, 0.75, 1.0])
-    # plt.title(params['envname'][:-3])
+    all_means = np.array(all_means)
+    inds = np.arange(len(all_means))
 
+    for ind, mean in zip(inds, all_means):
+        plt.bar([ind], [mean])
+
+    # plt.legend()
     save_path = 'images/'
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
+
     if should_save == True:
-        plt.savefig(save_path + str(params['envname']) + "_reward.pdf")
-        plt.savefig(save_path + str(params['envname']) + "_reward.svg")
+        plt.savefig(save_path + str(params['envname']) + "_time.pdf")
+        plt.savefig(save_path + str(params['envname']) + "_time.svg")
     else:
         plt.legend()
         plt.show()
