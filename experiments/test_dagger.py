@@ -64,7 +64,7 @@ class Test(framework.Test):
             else:
                 states, tmp_actions, _, _ = statistics.collect_traj_beta(self.env, self.sup, self.lnr, T, beta, False)
                 states, _, _ = utils.filter_data(self.params, states, tmp_actions)
-                i_actions = [self.sup_intended_action(s) for s in states]
+                i_actions = [self.sup.intended_action(s) for s in states]
                 beta = beta * self.params['beta']
 
             data_states += states
