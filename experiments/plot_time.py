@@ -128,6 +128,11 @@ def main():
 
     all_means = np.array(all_means)
     inds = np.arange(len(all_means))
+    inds[0] = 3
+    inds[1] = 0
+    inds[2] = 1
+    inds[3] = 2
+    inds[4] = 4
 
     for ind, mean in zip(inds, all_means):
         plt.bar([ind], [mean])
@@ -137,7 +142,7 @@ def main():
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
-
+    plt.xticks([])
     if should_save == True:
         plt.savefig(save_path + str(params['envname']) + "_time.pdf")
         plt.savefig(save_path + str(params['envname']) + "_time.svg")
